@@ -1,71 +1,158 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+## About Spatidemo
 
-## About Laravel
+This is a basic implementation of spati package
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Copy from console
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<code>
+Dell@DESKTOP-KU6707L MINGW64 /d/work/www/spatidemo
+$ php artisan tinker
+Psy Shell v0.9.9 (PHP 7.2.10 — cli) by Justin Hileman
+>>> Permission::create(['name' => 'edit articles']);
+PHP Fatal error:  Class 'Permission' not found in Psy Shell code on line 1
+>>> Spatie\Permission\Models\Permission::create(['name' => 'edit articles']);
+=> Spatie\Permission\Models\Permission {#115
+     name: "edit articles",
+     guard_name: "web",
+     updated_at: "2019-03-15 14:37:52",
+     created_at: "2019-03-15 14:37:52",
+     id: 1,
+   }
+>>> Spatie\Permission\Models\Role::create(['name' => 'writer']);
+=> Spatie\Permission\Models\Role {#2991
+     name: "writer",
+     guard_name: "web",
+     updated_at: "2019-03-15 14:38:15",
+     created_at: "2019-03-15 14:38:15",
+     id: 1,
+   }
+>>> Spatie\Permission\Models\Role::find(1)
+=> Spatie\Permission\Models\Role {#2993
+     id: 1,
+     name: "writer",
+     guard_name: "web",
+     created_at: "2019-03-15 14:38:15",
+     updated_at: "2019-03-15 14:38:15",
+   }
+>>> Spatie\Permission\Models\Role::find(1)->givePermissionTo(Spatie\Permission\M
+odels\Permission::find(1))
+=> Spatie\Permission\Models\Role {#2995
+     id: 1,
+     name: "writer",
+     guard_name: "web",
+     created_at: "2019-03-15 14:38:15",
+     updated_at: "2019-03-15 14:38:15",
+     permissions: Illuminate\Database\Eloquent\Collection {#3004
+       all: [
+         Spatie\Permission\Models\Permission {#3003
+           id: 1,
+           name: "edit articles",
+           guard_name: "web",
+           created_at: "2019-03-15 14:37:52",
+           updated_at: "2019-03-15 14:37:52",
+           pivot: Illuminate\Database\Eloquent\Relations\Pivot {#3001
+             role_id: 1,
+             permission_id: 1,
+           },
+         },
+       ],
+     },
+   }
+>>> Spatie\Permission\Models\Permission::find(1)->assignRole(Spatie\Permission\M
+odels\Role::find(1))
+=> Spatie\Permission\Models\Permission {#115
+     id: 1,
+     name: "edit articles",
+     guard_name: "web",
+     created_at: "2019-03-15 14:37:52",
+     updated_at: "2019-03-15 14:37:52",
+     roles: Illuminate\Database\Eloquent\Collection {#3016
+       all: [
+         Spatie\Permission\Models\Role {#3015
+           id: 1,
+           name: "writer",
+           guard_name: "web",
+           created_at: "2019-03-15 14:38:15",
+           updated_at: "2019-03-15 14:38:15",
+           pivot: Illuminate\Database\Eloquent\Relations\Pivot {#3013
+             permission_id: 1,
+             role_id: 1,
+           },
+         },
+       ],
+     },
+   }
+>>> App\User::create(['name' => 'Prafulla Kumar Sahu', 'email' => 'pk@example.com',
+ 'password' => Hash::Make('secret')])
+=> App\User {#3014
+     name: "Prafulla Kumar Sahu",
+     email: "pk@example.com",
+     updated_at: "2019-03-15 14:42:16",
+     created_at: "2019-03-15 14:42:16",
+     id: 1,
+   }
+>>> App\User::find(1)->givePermissionTo('edit articles');
+=> App\User {#3020
+     id: 1,
+     name: "Prafulla Kumar Sahu",
+     email: "pk@example.com",
+     email_verified_at: null,
+     created_at: "2019-03-15 14:42:16",
+     updated_at: "2019-03-15 14:42:16",
+     permissions: Illuminate\Database\Eloquent\Collection {#3047
+       all: [
+         Spatie\Permission\Models\Permission {#3046
+           id: 1,
+           name: "edit articles",
+           guard_name: "web",
+           created_at: "2019-03-15 14:37:52",
+           updated_at: "2019-03-15 14:37:52",
+           pivot: Illuminate\Database\Eloquent\Relations\MorphPivot {#3048
+             model_id: 1,
+             permission_id: 1,
+             model_type: "App\User",
+           },
+         },
+       ],
+     },
+   }
+>>> App\User::find(1)->assignRole('writer')
+=> App\User {#3038
+     id: 1,
+     name: "Prafulla Kumar Sahu",
+     email: "pk@example.com",
+     email_verified_at: null,
+     created_at: "2019-03-15 14:42:16",
+     updated_at: "2019-03-15 14:42:16",
+     roles: Illuminate\Database\Eloquent\Collection {#3054
+       all: [
+         Spatie\Permission\Models\Role {#3053
+           id: 1,
+           name: "writer",
+           guard_name: "web",
+           created_at: "2019-03-15 14:38:15",
+           updated_at: "2019-03-15 14:38:15",
+           pivot: Illuminate\Database\Eloquent\Relations\MorphPivot {#3055
+             model_id: 1,
+             role_id: 1,
+             model_type: "App\User",
+           },
+         },
+       ],
+     },
+   }
+>>>
+</code>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Now in home.blade.php
 
-## Learning Laravel
+<code>
+    @hasanyrole('writer')
+        I am either a writer!
+    @else
+        I have none of these roles...
+    @endhasanyrole
+</code>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost you and your team's skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Now login and test with with created user and other user
