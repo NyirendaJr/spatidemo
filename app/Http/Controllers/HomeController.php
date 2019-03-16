@@ -22,7 +22,7 @@ class HomeController extends Controller
 
     public function __construct() {
         $this->middleware('auth');
-        $this->frontend_path =  '/products_folder';
+        $this->frontend_path =  env('TEST_PATH') . '/products_folder';
         SELF::$path = $this->frontend_path;
 
         view()->share('frontend_path', $this->frontend_path);
